@@ -20,15 +20,27 @@ res=requests.get(url)
 
 # soup=BeautifulSoup(res.text,'lxml')
 # adresses=soup.find_all('h3', class_='subtitle is-6')
-# #print(adresses)
+# for adress in adresses:
+#     print(adress.text)
 
-# test = [adress.string for adress in adresses]
-# #print(test)
+# test = adress.string for adress in adresses
+# print(test)
 
 
 soup=BeautifulSoup(res.text,'html.parser')
-prices=soup.find("div", class_="card-content").find_all("p")
-#print(prices)
+# prices=soup.find("div", class_="card-content").find_all("p")
+# print(prices)
+
+# card_contents=soup.find_all("div", class_="card-content")
+# for card_content in card_contents:
+#     price=card_content.find("p").text.split()[0:6]
+#     print(price)
+
+card_contents=soup.find_all("div", class_="card-content")
+for card_content in card_contents:
+    price_hp=card_content.find("p").text.split()[7:]
+    print(price_hp)
+
 
 
 
