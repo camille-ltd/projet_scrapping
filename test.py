@@ -43,7 +43,6 @@ for card_content in card_contents:
 
 
 
-
 # test3 = [price.string.strip() for price in prices]
 # print(test3)
 
