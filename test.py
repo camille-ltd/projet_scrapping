@@ -1,57 +1,55 @@
 import requests 
 from bs4 import BeautifulSoup
-import pandas 
+import pandas as pd
+import numpy as np
 
 url='https://www.mistergoodbeer.com/bars-pas-chers/bordeaux'
 res=requests.get(url)
-# if res.ok:
-#     soup=BeautifulSoup(res.text,'lxml')
-#     bar=soup.findAll('div',{'class': 'a'})
-#     adresse=soup.findAll('div',{'class': 'subtitle'})
-#     print('bar: '+ str(bar) + 'n\n' + 'adresse: ' + str(adresse))
-
-# soup=BeautifulSoup(res.text,'lxml')
-# names=soup.find_all('a', style="flex-grow:1")
-# for name in names:
-#     print(name.text)
-
-# test1 = [name.string for name in names]
-# print(test1)
-
-# soup=BeautifulSoup(res.text,'lxml')
-# adresses=soup.find_all('h3', class_='subtitle is-6')
-# for adress in adresses:
-#     print(adress.text)
-
-# test = adress.string for adress in adresses
-# print(test)
+soup=BeautifulSoup(res.text,'lxml')
 
 
-soup=BeautifulSoup(res.text,'html.parser')
-# prices=soup.find("div", class_="card-content").find_all("p")
-# print(prices)
+#Récupération des noms des bars
+titles=soup.find_all('h2', class_="card-header-title")
+for title in titles:
+    name=title.find("a").text
+    #print(name)
 
-# card_contents=soup.find_all("div", class_="card-content")
-# for card_content in card_contents:
-#     price=card_content.find("p").text.split()[0:6]
-#     print(price)
+#Récupération des adresses des bars
+subtitles=soup.find_all('div', class_='card-content')
+for subtitle in subtitles:
+    adress=subtitle.find("h3").text
+    #print(adress)
 
+
+#Récupération des prix en happy hour
 card_contents=soup.find_all("div", class_="card-content")
 for card_content in card_contents:
-    price_hp=card_content.find("p").text.split()[7:]
-    print(price_hp)
+    price_hp=card_content.find("p").text.split()[0:7]
+    #print(price_hp)
 
+#Récupération des prix hors happy hour
+card_contents=soup.find_all("div", class_="card-content")
+for card_content in card_contents:
+    real_price=card_content.find("p").text.split()[7:]
+    #print(real_price)
 
+#Récupération des notes sur google
+url2='https://www.google.com/search?client=firefox-b-d&q=camelot+bordeaux#lrd=0xd5527c8508c16ad:0xec1b9b67da064e4e,1,,,'
+res2=requests.get(url)
+soup2=BeautifulSoup(res.text,'lxml')
+#print(soup)
 
-# test3 = [price.string.strip() for price in prices]
-# print(test3)
+note=soup.find("div", class_="review-score-container")
+print(note)
 
-# soup1=BeautifulSoup(prices, 'html.parser')
-# print(soup1)
+#Création d'un dataframe 
+# dic={
+# "Enseigne" : name,
+# "Adresse" : adress, 
+# "Prix en happy hour" : price_hp, 
+# "Prix hors happy hour" : real_price}
+# print(dic)
 
-# for price in prices:
-#     print(price.text)
+# df = pd.DataFrame(data=dic)
+# print(df)
 
-
-# dict={"bar" : test1, 'Adresses' : test}
-# print(dict)
